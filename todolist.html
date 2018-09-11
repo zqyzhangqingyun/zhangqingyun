@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>todolist</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <style type="text/css">
+   body{
+        margin:0;
+        padding:0;
+    }
+    label{
+        float:left;
+        line-height: 50px;
+        color:white;
+        margin-left: 30%;
+        font-size:24px;
+    }
+    #todo{
+        float:left;
+        border-radius:5px;
+        height: 24px;
+        width: 20%;
+        margin-left: 10%;
+        margin-top: 10px;
+        text-indent: 6px;
+    }
+    ul{
+        position: absolute;
+        top: 60px;
+        left: 30%;
+    }
+    ul li{
+        position: relative;
+        margin-bottom: 10px;
+        text-indent: 6px;
+    }
+    </style>
+</head>
+<body>
+    <div id="todo-list" v-bind:style="head">
+            <label for="todo">TODOLIST:</label>
+            <input v-model="newTodo" id="todo" v-on:keyup.enter="addNewTodo" placeholder="添加todo">
+        <ul>
+            <li 
+            is="todo-item"
+            v-for="(todo, index) in todos"
+            v-bind:key="todo.id"
+            v-bind:title="todo.title"
+            v-on:remove="todos.splice(index, 1)"></li>
+        </ul>
+    </div>
+
+    <script type="text/javascript">
+    Vue.component("todo-item",{
+        template:'<li>{{ title }}<button v-on:click="$emit(\'remove\')">X</button></li>',
+        props:['title']
+    })
+    new Vue({
+        el:'#todo-list',
+        data:{
+            newTodo:"",
+            todos:[],
+            nextTodoId:'',
+            head:{
+                height:'50px',
+                backgroundColor:'black',
+                fontSize:'20px',
+            },
+        },
+        methods:{
+            addNewTodo:function(){
+                this.todos.push({
+                    id:this.nextTodoId++,
+                    title:this.newTodo
+                })
+                this.newTodo=''
+            }
+        },
+    })
+    </script>
+</body>
+</html>
